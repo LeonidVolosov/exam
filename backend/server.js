@@ -21,8 +21,7 @@ mqttClient.on('message', (topic, message) => {
     }
 
     if (topic === 'device/getData') {
-        const data = "Temperature: 22°C";  
-        console.log(`Sending data: ${data}`);
+        const data = "Temperature: 22°C";
         mqttClient.publish('device/data', data);
     }
 });
@@ -34,3 +33,4 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
