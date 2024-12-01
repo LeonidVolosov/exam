@@ -1,25 +1,26 @@
-const sendCommand = async (command) => {
-    try {
-        const response = await fetch('/command', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ command }),
-        });
-        const result = await response.json();
-        alert(result.message);
-    } catch (error) {
-        console.error('Error sending command:', error);
-    }
-};
+const mqtt = require('mqtt');
 
-const getData = async () => {
-    try {
-        const response = await fetch('/data');
-        const data = await response.json();
-        document.getElementById('data-output').textContent = JSON.stringify(data);
-    } catch (error) {
-        console.error('Error fetching data:', error);
+const client = mqtt.connect('ws://localhost:9001'); 
+
+client.on('connect', function () {
+    console.log('Connected to MQTT broker');
+});
+
+
+document.getElementById('onButton').addEventListener('click', function () {
+    client.publish('device/control', 'on');
+});
+
+document.getElementById('offButton').addEventListener('click', function () {
+    client.publish('device/control', 'off');
+});
+
+document.getElementById('getDataButton').addEventListener('click', function () {
+    client.publish('device/getData', 'request');
+});
+
+client.on('message', function (topic, message) {
+    if (topic === 'device/data') {
+        document.getElementById('dataDisplay').innerText = 'Data: ' + message.toString();
     }
-};
+});
