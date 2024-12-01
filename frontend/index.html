@@ -1,0 +1,21 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Device Control</title>
+</head>
+<body>
+    <h1>IoT Device Control</h1>
+    <div>
+        <label for="power">Power:</label>
+        <button onclick="sendCommand('on')">On</button>
+        <button onclick="sendCommand('off')">Off</button>
+    </div>
+    <div>
+        <label for="data">Device Data:</label>
+        <button onclick="getData()">Fetch Data</button>
+        <p id="data-output"></p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
