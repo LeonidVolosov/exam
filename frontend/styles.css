@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+button {
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+}
