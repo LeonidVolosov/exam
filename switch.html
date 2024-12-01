@@ -1,0 +1,12 @@
+<button onclick="controlDevice('on')">Turn ON</button>
+<button onclick="controlDevice('off')">Turn OFF</button>
+
+<script>
+  function controlDevice(state) {
+    fetch('http://localhost:5000/control', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state })
+    });
+  }
+</script>
