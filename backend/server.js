@@ -1,36 +1,39 @@
-const express = require('express');
 const mqtt = require('mqtt');
-
+const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 
-app.use(express.json());
 
-// MQTT Client
-const mqttClient = mqtt.connect('mqtt://broker.hivemq.com');
-let deviceData = { status: 'off', temperature: 25 };
+const mqttClient = mqtt.connect('mqtt://localhost');
 
 mqttClient.on('connect', () => {
     console.log('Connected to MQTT broker');
+    mqttClient.subscribe('device/control');
+    mqttClient.subscribe('device/getData');
 });
 
 mqttClient.on('message', (topic, message) => {
-    if (topic === 'iot/device/data') {
-        deviceData = JSON.parse(message.toString());
+    if (topic === 'device/control') {
+        if (message.toString() === 'on') {
+            console.log('Turning on the device');
+            
+        } else if (message.toString() === 'off') {
+            console.log('Turning off the device');
+            
+        }
+    }
+
+    if (topic === 'device/getData') {
+        const data = "Temperature: 22°C"; 
+        mqttClient.publish('device/data', data);
     }
 });
 
-// Routes
-app.post('/command', (req, res) => {
-    const { command } = req.body;
-    mqttClient.publish('iot/device/command', command);
-    res.json({ message: `Command '${command}' sent to device` });
-});
 
-app.get('/data', (req, res) => {
-    res.json(deviceData);
+app.get('/', (req, res) => {
+    res.send('IoT Backend');
 });
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });
