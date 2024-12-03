@@ -3,12 +3,13 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+
 const mqttClient = mqtt.connect('mqtt://localhost');
 
 mqttClient.on('connect', () => {
     console.log('Connected to MQTT broker');
-    mqttClient.subscribe('device/data');
-    mqttClient.subscribe('device/control');
+    mqttClient.subscribe('device/data');  
+    mqttClient.subscribe('device/control');  
 });
 
 mqttClient.on('message', (topic, message) => {
@@ -28,5 +29,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
-
-
